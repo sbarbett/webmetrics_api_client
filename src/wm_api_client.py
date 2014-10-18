@@ -35,15 +35,18 @@ class ApiClient:
 	# General
 	# get account services
 	def get_services(self):
+		"""Get a list of service names and ids for an account."""
+		query = { 'method' : 'maintenance.getServices' }
+		return self.api_connection.get(query)
 	
 	# get account notepad
-	def get_notepad(self):
+	# def get_notepad(self):
 	
 	# set account notepad
-	def set_notepad(self):
+	# def set_notepad(self):
 	
 	# get the 'type' of a service by id
-	def get_service_type(self):
+	# def get_service_type(self):
 	
 	# Admin
 	

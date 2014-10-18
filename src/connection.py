@@ -20,6 +20,7 @@ import urllib2
 import base64
 import hashlib
 import time
+import json
 
 # store the URL and signature as state
 
@@ -41,21 +42,28 @@ class ApiConnection:
 		timestamp = str(int(time.time()))
 		self.sig = base64.b64encode(hashlib.sha1(username + api_key + timestamp).digest())
 	
-	def _refresh(self, username, api_key):
-		self.auth(username, api_key, method)
+	def _refresh(self, method):
+		self.auth(self.username, self.api_key, method)
 		self._do_call(method, False)
 	
 	# Requests
 	# Methods for accessing the API using Python's native urllib2
 	# libraries. Use the auth methods to verify the stored signature 
 	# and refresh if needed.
+	def get(self, method):
+		query = { 'username' : self.username, 'sig' : self.sig, 'format' : 'json' }
+		query.update(method)
+		query = urllib.urlencode(query)
+		return self._do_call(query)
+	
 	def _do_call(self, method, retry=True):
 		request = self.base_url + method
 		response = urllib2.urlopen(request)
+		data = json.load(response)
 		time.sleep(3)
-		if response['stat'] == 'fail' and retry == False:
+		if data['stat'] == 'fail' and retry == False:
 			raise Exception("Authentication failed.")
-		elif response['stat'] == 'fail':
-			self._refresh(self.username, self.api_key, method)
+		elif data['stat'] == 'fail':
+			self._refresh(method)
 		else:
-			return json.load(response)
+			return json.dumps(data)

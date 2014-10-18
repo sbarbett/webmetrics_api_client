@@ -18,10 +18,12 @@ __author__ = 'Shane Barbetta'
 import wm_api_client
 import sys
 
-if len(sys.argv) != 3):
+if len(sys.argv) != 3:
 	raise Exception('Expected use: python sample.py username password')
 	
 username = sys.argv[1]
 password = sys.argv[2]
 
 c = wm_api_client.ApiClient(username, password)
+
+print 'services %s \n' % c.get_services()
