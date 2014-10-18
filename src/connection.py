@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Shane Barbetta'
 
+import urllib
 import urllib2
 import base64
 import hashlib
@@ -24,7 +25,9 @@ import time
 
 class ApiConnection:
 	def __init__(self):
+		self.username = ''
 		self.sig = ''
+		self.api_key = ''
 		self.base_url = 'https://api.webmetrics.com/v2/?'
 		
 	# Authentication
@@ -33,15 +36,26 @@ class ApiConnection:
 	# once it becomes stale. If a request fails, it should try again
 	# with a new auth token.
 	def auth(self, username, api_key):
+		self.username = username
+		self.api_key = api_key
 		timestamp = str(int(time.time()))
 		self.sig = base64.b64encode(hashlib.sha1(username + api_key + timestamp).digest())
 	
-	def _refresh(self):
-	
-	def _check_sig(self):
+	def _refresh(self, username, api_key):
+		self.auth(username, api_key, method)
+		self._do_call(method, False)
 	
 	# Requests
 	# Methods for accessing the API using Python's native urllib2
 	# libraries. Use the auth methods to verify the stored signature 
 	# and refresh if needed.
-	def _do_call():
+	def _do_call(self, method, retry=True):
+		request = self.base_url + method
+		response = urllib2.urlopen(request)
+		time.sleep(3)
+		if response['stat'] == 'fail' and retry == False:
+			raise Exception("Authentication failed.")
+		elif response['stat'] == 'fail':
+			self._refresh(self.username, self.api_key, method)
+		else:
+			return json.load(response)
