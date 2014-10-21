@@ -57,9 +57,106 @@ class ApiClient:
 		return self.api_connection.get(query)
 		
 	# get the 'type' of a service by id
-	# def get_service_type(self):
-	
+	def get_service_type(self, service_id):
+		"""Given a service id, returns the monitoring type.
+		
+		Arguments:
+		service_id -- The id of the service you want to get the 
+		              type of.
+					 
+		"""
+		query = { 'method' : 'maintenance.getServiceType', 'serviceid' : service_id }
+		return self.api_connection.get(query)
+		
 	# Admin
+	# create a new monitoring service
+	def add_new_service(self, service_name, service_type):
+		"""Add a new monitoring service to the specified Webmetrics
+		account. A trial is created for customers not on metered.
+		
+		Arguments:
+		service_name -- The name to give the new service. Service
+		                names can include alphanumeric, hyphen and
+					    underscore characters.
+		service_type -- The type of service. You can use the following:
+		                APPLICATION
+					    DNS
+					    FTP
+					    PING
+					    POP
+					    PORT
+					    SMTP
+					    STREAM
+					    WEBSERVICE
+					    WEBSITE
+					    WSTRANS		
+	
+		"""
+		query = { 'method' : 'maintenance.addNewService', 'servicename' : service_name, 'servicetype' : service_type.lower() }
+		return self.api_connection.get(query)
+	
+	# change your user password
+	def change_password(self, new_password):
+		"""Sets the password for a given username.
+		
+		Arguments:
+		new_password -- The new password.
+		
+		"""
+		query = { 'method' : 'maintenance.changePassword', 'newpassword' : new_password }
+		return self.api_connection.get(query)
+	
+	# rename an existing service
+	def rename_service(self, new_name, service_id):
+		"""Renames the service specified by the service ID.
+		
+		Arguments:
+		new_name -- The new service name. This must contain only alpha-
+		            numeric characters, underscores and dashes. The new
+					service name must be different from the current and
+					cannot be a duplicate of another existing service
+					and/or longer than 50 chars.
+		service_id -- The id of the service to be renamed.
+		
+		"""
+		query = { 'method' : 'maintenance.renameService', 'newname' : new_name, 'serviceid' : service_id }
+		return self.api_connection.get(query)
+		
+	# reset a service
+	def reset_service(self, service_id, **kwargs):
+		"""WARNING: This will remove all collected data for a service
+		and is not reversible. The following will be cleared: historical
+		log data, uptime info, service description, URL(s), script(s),
+		search and error strings.
+		
+		Contact info for alerting purposes (as well as error notification
+		settings), monitoring agent locations, maintenance windows, perf-
+		ormance SLA objectives, interval and strikes before error are
+		not affected.
+		
+		The service will be turned off once reset.
+		
+		NOTE: This API is not available for metered accounts.
+		
+		Arguments:
+		service_id -- The id of the service you wish to reset.
+		
+		Keyword Arguments:
+		keep_scripts -- Boolean. Monitoring scripts and URL(s) will not be
+	       	            deleted.
+		keep_description -- Boolean. The service description will not be
+		                    deleted.
+		keep_logs -- Boolean. The log data will not be deleted.
+		
+		"""
+		query = { 'method' : 'maintenance.resetService', 'serviceid' : service_id }
+		if 'keep_scripts' in kwargs and kwargs['keep_scripts'] == True:
+			query.update({ 'keepscripts' : '1' })
+		elif 'keep_description' in kwargs and kwargs['keep_description'] == True:
+			query.update({ 'keepdescription' : '1'})
+		elif 'keep_logs' in kwargs and kwargs['keep_logs'] == True:
+			query.update({ 'keeplogs' : '1' })
+		return self.api_connection.get(query)
 	
 	# Agent Settings
 	
