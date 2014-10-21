@@ -27,4 +27,5 @@ password = sys.argv[2]
 c = wm_api_client.ApiClient(username, password)
 
 print 'get services %s ' % c.get_services()
+print 'set notepad %s' % c.set_notepad('A string of text to test the notepad')
 print 'get notepad %s ' % c.get_notepad()

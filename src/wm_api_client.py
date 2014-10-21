@@ -46,8 +46,16 @@ class ApiClient:
 		return self.api_connection.get(query)
 	
 	# set account notepad
-	# def set_notepad(self):
-	
+	def set_notepad(self, notepad):
+		"""Sets the notepad of an account.
+		
+		Arguments:
+		notepad -- The notepad contents you wish to set.
+		
+		"""
+		query = { 'method' : 'maintenance.setNotepad', 'notepad' : notepad }
+		return self.api_connection.get(query)
+		
 	# get the 'type' of a service by id
 	# def get_service_type(self):
 	
