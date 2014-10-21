@@ -40,7 +40,10 @@ class ApiClient:
 		return self.api_connection.get(query)
 	
 	# get account notepad
-	# def get_notepad(self):
+	def get_notepad(self):
+		"""Returns the notepad of a given account."""
+		query = { 'method' : 'maintenance.getNotepad' }
+		return self.api_connection.get(query)
 	
 	# set account notepad
 	# def set_notepad(self):
