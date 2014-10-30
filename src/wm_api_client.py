@@ -157,6 +157,10 @@ class ApiClient:
 		elif 'keep_logs' in kwargs and kwargs['keep_logs'] == True:
 			query.update({ 'keeplogs' : '1' })
 		return self.api_connection.get(query)
+		
+	# duplicate a service
+	# def duplicate_service(self):
+	"""This method is strange. I will come back to it."""
 	
 	# Agent Settings
 	
