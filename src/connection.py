@@ -43,7 +43,7 @@ class ApiConnection:
 		self.sig = base64.b64encode(hashlib.sha1(username + api_key + timestamp).digest())
 	
 	def _refresh(self, method):
-		self.auth(self.username, self.api_key, method)
+		self.auth(self.username, self.api_key)
 		self._do_call(method, False)
 	
 	# Requests

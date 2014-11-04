@@ -17,6 +17,8 @@ __author__ = 'Shane Barbetta'
 
 import wm_api_client
 import sys
+import json
+import time
 
 if len(sys.argv) != 3:
 	raise Exception('Expected use: python sample.py username api_key')
@@ -26,4 +28,28 @@ api_key = sys.argv[2]
 
 c = wm_api_client.ApiClient(username, api_key)
 
-print 'get services %s ' % c.get_services()
+account_data = json.loads(c.get_services())
+
+for service in account_data['service']:
+	print '------------------------------------------------------------>'
+	print 'monitor_name ::: %s' % json.dumps(service['name'])
+	print 'service_id ::: %s' % json.dumps(service['id'])
+	print 'alert_contacts :::'
+	
+	service_contacts = json.loads(c.get_all_alerting_contacts(json.dumps(service['id'])[2:-2]))
+	
+	print '\tlevel1 ::: '
+	for contact in service_contacts['level1']['contact']:
+		print '\t\t%s' % json.dumps(contact)
+		
+	print '\tlevel2 ::: '
+	for contact in service_contacts['level2']['contact']:
+		print '\t\t%s' % json.dumps(contact)
+		
+	print '\tlevel3 ::: '
+	for contact in service_contacts['level3']['contact']:
+		print '\t\t%s' % json.dumps(contact)
+		
+	print '\tdiagnostic ::: '
+	for contact in service_contacts['diagnostic']['contact']:
+		print '\t\t%s' % json.dumps(contact)
