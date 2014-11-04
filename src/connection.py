@@ -44,7 +44,7 @@ class ApiConnection:
 	
 	def _refresh(self, method):
 		self.auth(self.username, self.api_key)
-		self._do_call(method, False)
+		return self._do_call(method, False)
 	
 	# Requests
 	# Methods for accessing the API using Python's native urllib2
@@ -58,12 +58,14 @@ class ApiConnection:
 	
 	def _do_call(self, method, retry=True):
 		request = self.base_url + method
+		# print request
 		response = urllib2.urlopen(request)
 		data = json.load(response)
+		# print json.dumps(data)
 		time.sleep(3)
 		if data['stat'] == 'fail' and retry == False:
 			raise Exception("Authentication failed.")
 		elif data['stat'] == 'fail':
-			self._refresh(method)
+			return self._refresh(method)
 		else:
 			return json.dumps(data)

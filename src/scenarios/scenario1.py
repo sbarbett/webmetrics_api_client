@@ -18,7 +18,6 @@ __author__ = 'Shane Barbetta'
 import wm_api_client
 import sys
 import json
-import time
 
 if len(sys.argv) != 3:
 	raise Exception('Expected use: python sample.py username api_key')
@@ -28,6 +27,14 @@ api_key = sys.argv[2]
 
 c = wm_api_client.ApiClient(username, api_key)
 
+'''The purpose of this scenario is to query and display all alert
+contacts in a given account using the following.
+
+-- Use get_services to obtain of service_ids
+-- Query each individual service_id using get_all_alerting_contacts
+   and parse out the data to make it readable.
+
+'''
 account_data = json.loads(c.get_services())
 
 for service in account_data['service']:
