@@ -169,6 +169,16 @@ class ApiClient:
 	# Service Settings
 	
 	# Alert Contact Settings
+	# get all alerting contacts
+	def get_all_alerting_contacts(self, service_id):
+		"""Get all contacts (diagnostic and escalation level) for a service.
+		
+		Arguments:
+		service_id -- The service id of the service you want contacts for.
+		
+		"""
+		query = { 'method' : 'maintenance.getAllAlertingContacts', 'serviceid' : service_id }
+		return self.api_connection.get(query)
 	
 	# Reports
 	
