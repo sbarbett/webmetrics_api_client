@@ -51,13 +51,12 @@ class ApiConnection:
 	# libraries. Use the auth methods to verify the stored signature 
 	# and refresh if needed.
 	def get(self, method):
-		query = { 'username' : self.username, 'sig' : self.sig, 'format' : 'json' }
-		query.update(method)
-		query = urllib.urlencode(query)
-		return self._do_call(query)
+		return self._do_call(method)
 	
 	def _do_call(self, method, retry=True):
-		request = self.base_url + method
+		base_query = { 'username' : self.username, 'sig' : self.sig, 'format' : 'json' }
+		base_query.update(method)
+		request = self.base_url + urllib.urlencode(base_query)
 		# print request
 		response = urllib2.urlopen(request)
 		data = json.load(response)
