@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Shane Barbetta'
 
+import sys
+sys.path.insert(0, '../')
 import wm_api_client
 import sys
 
