@@ -36,7 +36,7 @@ contacts in a given account using the following.
    and parse out the data to make it readable.
 
 '''
-account_data = json.loads(c.get_services())
+account_data = c.get_services()
 
 for service in account_data['service']:
 	print '------------------------------------------------------------>'
@@ -44,7 +44,7 @@ for service in account_data['service']:
 	print 'service_id ::: %s' % json.dumps(service['id'])
 	print 'alert_contacts :::'
 	
-	service_contacts = json.loads(c.get_all_alerting_contacts(json.dumps(service['id'])[2:-2]))
+	service_contacts = c.get_all_alerting_contacts(json.dumps(service['id'])[2:-2])
 	
 	print '\tlevel1 ::: '
 	for contact in service_contacts['level1']['contact']:

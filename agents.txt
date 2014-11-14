@@ -1,0 +1,100 @@
+Pittsburgh, PA
+Cairo, Egypt
+Missoula, MT
+San Francisco, CA
+Honolulu, HI
+Palo Alto, CA
+St. Louis, MO
+Hartford, CT
+Philadelphia, PA
+Scranton, PA
+Edinburgh, Scotland
+Chicago, IL
+London, England
+Newark, NJ
+Cape Town, South Africa
+Guangzhou, China
+Nagoya, Japan
+Delhi, India
+Sioux Falls, SD
+Tampa, FL
+Minneapolis, MN
+Oslo, Norway
+Kuala Lumpur, Malaysia
+Berlin, Germany
+Shanghai, China
+Melbourne, Australia
+Madrid, Spain
+Zurich, Switzerland
+Columbus, OH
+Birmingham, England
+Bangalore, India
+Las Vegas, NV
+Toronto, Canada
+Buenos Aires, Argentina
+Dublin, Ireland
+Atlanta, GA
+Brussels, Belgium
+New York, NY
+Raleigh, NC
+Vancouver, Canada
+Denver, CO
+Lisbon, Portugal
+Halifax, Canada
+Kansas City, MO
+Istanbul, Turkey
+Hamburg, Germany
+Boston, MA
+Amsterdam, Netherlands
+Omaha, NE
+Munich, Germany
+Singapore
+Budapest, Hungary
+Annapolis, MD
+Bucharest, Romania
+Phoenix, AZ
+San Diego, CA
+Dallas, TX
+Mumbai, India
+Cleveland, OH
+Miami, FL
+Calgary, Canada
+Milwaukee, WI
+Montreal, Canada
+Stockholm, Sweden
+Washington, D.C.
+Albuquerque, NM
+Portland, OR
+Los Angeles, CA
+Charlotte, NC
+Austin, TX
+Tokyo, Japan
+Boise, ID
+Warsaw, Poland
+Auckland, New Zealand
+Tel Aviv, Israel
+Prague, Czech Republic
+Akron, OH
+Copenhagen, Denmark
+Brisbane, Australia
+Rotterdam, Netherlands
+Paris, France
+Taipei, Taiwan
+Beijing, China
+Frankfurt, Germany
+Barcelona, Spain
+Sao Paulo, Brazil
+Salt Lake City, UT
+Sydney, Australia
+Seattle, WA
+San Jose, CA
+Detroit, MI
+Houston, TX
+Helsinki, Finland
+Bedford, NH
+Manchester, England
+Hong Kong
+Milan, Italy
+Dubai, UAE
+Porto Alegre, Brazil
+New Orleans, LA

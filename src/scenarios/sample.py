@@ -18,7 +18,6 @@ __author__ = 'Shane Barbetta'
 import sys
 sys.path.insert(0, '../')
 import wm_api_client
-import sys
 
 if len(sys.argv) != 3:
 	raise Exception('Expected use: python sample.py username api_key')

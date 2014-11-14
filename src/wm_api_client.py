@@ -157,12 +157,48 @@ class ApiClient:
         elif 'keep_logs' in kwargs and kwargs['keep_logs'] == True:
             query.update({ 'keeplogs' : '1' })
         return self.api_connection.get(query)
-        
-    # duplicate a service
-    # def duplicate_service(self):
-    """This method is strange. I will come back to it."""
 
     # Agent Settings
+    # get a list of configured agents
+    def get_agent_list(self, service_id):
+        """Return a list of agents currently configured for a specified
+        service. This will return both baseline, non-baseline and excluded
+        agents.
+        
+        Arguments:
+        service_id -- The id of the service for which you wish to return
+                      a list of agents.
+                      
+        """
+        query = { 'method' : 'maintenance.getAgentList', 'serviceid' : service_id }
+        return self.api_connection.get(query)
+        
+    # set the list of configured agents
+    def set_agent_list(self, service_id, agent, baseline=None):
+        """Set the agents from which a service will run. To get a list of
+        agents that a service can run from, use get_agent_info.
+        
+        Arguments:
+        service_id -- The service for which you wish to set the agents.
+        agent -- A list of agents that will be non-baseline for the service.
+                 See 'agents.txt' for all locations.
+        
+        Keyword Arguments:
+        baseline -- A list of baseline agents. If you wish to use baselines,
+                    you must use 3 unless the number of strikes for the
+                    service is set to 4, in which case you must specify 4
+                    baseline agents.
+                    
+        """
+        query = { 'method' : 'maintenance.setAgentList', 'serviceid' : service_id }
+        if type(agent) is not list:
+            agent = [agent]
+        if baseline is not None and type(baseline) is not list:
+            baseline = [baseline]
+        query['agent'] = agent
+        if baseline is not None:
+            query['baseline'] = baseline
+        return self.api_connection.get(query)
 
     # Service Status
 

@@ -57,12 +57,12 @@ class ApiConnection:
         base_query = { 'username' : self.username, 'sig' : self.sig, 'format' : 'json' }
         base_query.update(method)
         request = self.base_url + urllib.urlencode(base_query, doseq=True)
+        # For debugging if needed
         # print request
         response = urllib2.urlopen(request)
         data = json.load(response)
-        # print json.dumps(data)
         time.sleep(3)
         if data['stat'] == 'fail' and retry != False:
             return self._refresh(method)
         else:
-            return json.dumps(data)
+            return data
