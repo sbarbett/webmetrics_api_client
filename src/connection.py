@@ -63,7 +63,7 @@ class ApiConnection:
         # print json.dumps(data)
         time.sleep(3)
         if data['stat'] == 'fail' and retry == False:
-            raise Exception("Authentication failed.")
+            raise json.dumps(data)
         elif data['stat'] == 'fail':
             return self._refresh(method)
         else:
