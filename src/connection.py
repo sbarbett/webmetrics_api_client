@@ -62,9 +62,7 @@ class ApiConnection:
         data = json.load(response)
         # print json.dumps(data)
         time.sleep(3)
-        if data['stat'] == 'fail' and retry == False:
-            raise json.dumps(data)
-        elif data['stat'] == 'fail':
+        if data['stat'] == 'fail' and retry != False:
             return self._refresh(method)
         else:
             return json.dumps(data)
