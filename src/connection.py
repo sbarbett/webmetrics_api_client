@@ -15,12 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Shane Barbetta'
 
-import urllib
-import urllib2
-import base64
-import hashlib
-import time
-import json
+import urllib, urllib2, base64, hashlib, time, json
 
 # store the URL and signature as state
 

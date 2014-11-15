@@ -15,49 +15,112 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Shane Barbetta'
 
-import sys
+import sys, json, csv
 sys.path.insert(0, '../')
 import wm_api_client
-import json
 
-if len(sys.argv) != 3:
-	raise Exception('Expected use: python sample.py username api_key')
+if len(sys.argv) != 3 and len(sys.argv) != 4:
+    raise Exception('Expected use: python scenario1.py username api_key [filename.csv]')
+
+"""The purpose of this scenario is to query and display all alert
+contacts in a given account using the following.
+
+Arguments:
+username -- The username of the Webmetrics account for which alert
+            contacts are to be queried.
+api_key -- The Webmetrics API key for the account.
+filename -- Optional: The name of the file to which the data is to
+            saved.
+
+"""
 	
 username = sys.argv[1]
 api_key = sys.argv[2]
+save_file = False
+
+if len(sys.argv) == 4:
+    if sys.argv[3][-4:] == '.csv':
+        save_file = True
+        file = csv.writer(open(sys.argv[3], "wb"))
+        file.writerow(['Monitor Name', 'Service ID', 'Level 1 Escalation', 'Level 2 Escalation', 'Level 3 Escalation', 'Diagnostic Contact'])
+    else:
+        raise Exception('File name must end in .csv')
 
 c = wm_api_client.ApiClient(username, api_key)
 
-'''The purpose of this scenario is to query and display all alert
-contacts in a given account using the following.
-
--- Use get_services to obtain of service_ids
--- Query each individual service_id using get_all_alerting_contacts
-   and parse out the data to make it readable.
-
-'''
 account_data = c.get_services()
 
 for service in account_data['service']:
-	print '------------------------------------------------------------>'
-	print 'monitor_name ::: %s' % json.dumps(service['name'])
-	print 'service_id ::: %s' % json.dumps(service['id'])
-	print 'alert_contacts :::'
-	
-	service_contacts = c.get_all_alerting_contacts(json.dumps(service['id'])[2:-2])
-	
-	print '\tlevel1 ::: '
-	for contact in service_contacts['level1']['contact']:
-		print '\t\t%s' % json.dumps(contact)
-		
-	print '\tlevel2 ::: '
-	for contact in service_contacts['level2']['contact']:
-		print '\t\t%s' % json.dumps(contact)
-		
-	print '\tlevel3 ::: '
-	for contact in service_contacts['level3']['contact']:
-		print '\t\t%s' % json.dumps(contact)
-		
-	print '\tdiagnostic ::: '
-	for contact in service_contacts['diagnostic']['contact']:
-		print '\t\t%s' % json.dumps(contact)
+    name = json.dumps(service['name'])[2:-2]
+    id = json.dumps(service['id'])[2:-2]
+    if save_file == True:
+        level1 = ''
+        level2 = ''
+        level3 = ''
+        diagnostic = ''
+
+    print '------------------------------------------------------------>'
+    print 'monitor_name ::: %s' % name
+    print 'service_id ::: %s' % id
+    print 'alert_contacts :::'
+
+    service_contacts = c.get_all_alerting_contacts(id)
+
+    print '\tlevel1 ::: '
+    i = 1
+    length = len(service_contacts['level1']['contact'])
+    for contact in service_contacts['level1']['contact']:
+        contact = contact.rstrip()
+        if contact:
+            print '\t\t%s' % contact
+            if save_file == True:
+                if i == length:
+                    level1 += contact
+                else:
+                    level1 += contact + '\n'
+        i = i + 1
+        
+    print '\tlevel2 ::: '
+    i = 1
+    length = len(service_contacts['level2']['contact'])
+    for contact in service_contacts['level2']['contact']:
+        contact = contact.rstrip()
+        if contact:
+            print '\t\t%s' % contact
+            if save_file == True:
+                if i == length:
+                    level2 += contact
+                else:
+                    level2 += contact + '\n'
+        i = i + 1
+        
+    print '\tlevel3 ::: '
+    i = 1
+    length = len(service_contacts['level3']['contact'])
+    for contact in service_contacts['level3']['contact']:
+        contact = contact.rstrip()
+        if contact:
+            print '\t\t%s' % contact
+            if save_file == True:
+                if i == length:
+                    level3 += contact
+                else:
+                    level3 += contact + '\n'
+        i = i + 1
+        
+    print '\tdiagnostic ::: '
+    i = 1
+    length = len(service_contacts['diagnostic']['contact'])
+    for contact in service_contacts['diagnostic']['contact']:
+        contact = contact.rstrip()
+        if contact:
+            print '\t\t%s' % contact
+            if save_file == True:
+                if i == length:
+                    diagnostic += contact
+                else:
+                    diagnostic += contact + '\n'
+        i = i + 1
+
+    if save_file == True:
+        file.writerow([name, id, level1, level2, level3, diagnostic])

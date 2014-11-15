@@ -15,8 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 __author__ = 'Shane Barbetta'
 
-import connection
-import json
+import connection, json
 
 # client containing different API services
 

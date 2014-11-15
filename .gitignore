@@ -44,4 +44,4 @@ Temporary Items
 
 # misc.
 test.py
-test.csv
+*.csv
