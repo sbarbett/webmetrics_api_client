@@ -70,7 +70,10 @@ for service in account_data['service']:
     i = 1
     length = len(service_contacts['level1']['contact'])
     for contact in service_contacts['level1']['contact']:
-        contact = contact.rstrip()
+        if contact is not None:
+            contact = contact.rstrip()
+        else:
+            continue
         if contact:
             print '\t\t%s' % contact
             if save_file == True:
@@ -84,7 +87,10 @@ for service in account_data['service']:
     i = 1
     length = len(service_contacts['level2']['contact'])
     for contact in service_contacts['level2']['contact']:
-        contact = contact.rstrip()
+        if contact is not None:
+            contact = contact.rstrip()
+        else:
+            continue
         if contact:
             print '\t\t%s' % contact
             if save_file == True:
@@ -98,7 +104,10 @@ for service in account_data['service']:
     i = 1
     length = len(service_contacts['level3']['contact'])
     for contact in service_contacts['level3']['contact']:
-        contact = contact.rstrip()
+        if contact is not None:
+            contact = contact.rstrip()
+        else:
+            continue
         if contact:
             print '\t\t%s' % contact
             if save_file == True:
@@ -112,7 +121,10 @@ for service in account_data['service']:
     i = 1
     length = len(service_contacts['diagnostic']['contact'])
     for contact in service_contacts['diagnostic']['contact']:
-        contact = contact.rstrip()
+        if contact is not None:
+            contact = contact.rstrip()
+        else:
+            continue
         if contact:
             print '\t\t%s' % contact
             if save_file == True:
