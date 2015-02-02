@@ -28,8 +28,7 @@ class ApiClient:
         api_key -- The API key of the user
 
         """
-        self.api_connection = connection.ApiConnection()
-        self.api_connection.auth(username, api_key)
+        self.api_connection = connection.ApiConnection(username, api_key)
         
     # General
     # get account services
@@ -297,9 +296,30 @@ class ApiClient:
 
     # Maintenance Windows
     
+    # Log Download
+    # download the raw log data for a service
+    def logdownload_getdata(self, service_id, day, month, year, hour=None):
+        """Gets the raw log file for a particular day.
+        
+        Arguments:
+        service_id -- The service id to download the log for.
+        day -- Day of the month (1-31)
+        month -- Month of the year (1-12)
+        year -- A four digit year
+        
+        Keyword Arguments:
+        hour -- An optional hour of the day (0-23). This returns hourly data vs. daily.
+        
+        """
+        query = { 'method' : 'logdownload.getdata', 'serviceid' : service_id, 'day' : day, 'month' : month, 'year' : year }
+        if hour is not None:
+            query.update({ 'hour' : hour })
+        return self.api_connection.get(query, False)
+    
     # Processed Data
+    # gather data for a service which has already been summarized
     def processeddata_getdata(self, service_id, s_day, s_month, s_year, e_day, e_month, e_year):
-        """Gather summarized data for a service.
+        """The processed data API allows customers to download globalwatch monitoring data in a concise summary format.
         
         Arguments:
         service_id -- The service id of for the service for which data is to be retrieved.
@@ -312,4 +332,11 @@ class ApiClient:
         
         """
         query = { 'method' : 'processeddata.getdata', 'serviceid' : service_id, 'sday' : s_day, 'smonth' : s_month, 'syear' : s_year, 'eday' : e_day, 'emonth' : e_month, 'eyear' : e_year }
-        return self.api_connection.get(query)
+        return self.api_connection.get(query, False)
+        
+    # Realtime
+    # returns real time data for a service
+    
+    # Account Snapshot
+    # returns core statistics for all services within an account
+    

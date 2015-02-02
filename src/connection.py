@@ -20,36 +20,27 @@ import urllib, urllib2, base64, hashlib, time, json
 # store the URL and signature as state
 
 class ApiConnection:
-    def __init__(self):
-        self.username = ''
-        self.sig = ''
-        self.api_key = ''
+    def __init__(self, username, api_key):
+        self.username = username
+        self.api_key = api_key
         self.base_url = 'https://api.webmetrics.com/v2/?'
         
     # Authentication
-    # The ability to created a signature hash value and retain it for
-    # its +/- 10 minute duration, while dynamically refreshing the sig
-    # once it becomes stale. If a request fails, it should try again
-    # with a new auth token.
-    def auth(self, username, api_key):
-        self.username = username
-        self.api_key = api_key
+    def _auth(self):
         timestamp = str(int(time.time()))
-        self.sig = base64.b64encode(hashlib.sha1(username + api_key + timestamp).digest())
-
-    def _refresh(self, method):
-        self.auth(self.username, self.api_key)
-        return self._do_call(method, False)
+        return base64.b64encode(hashlib.sha1(self.username + self.api_key + timestamp).digest())
 
     # Requests
     # Methods for accessing the API using Python's native urllib2
-    # libraries. Use the auth methods to verify the stored signature 
-    # and refresh if needed.
-    def get(self, method):
-        return self._do_call(method)
+    # libraries.
+    def get(self, method, retry=True):
+        return self._do_call(method, retry)
+        
+    def _refresh(self, method):
+        return self._do_call(method, False)
 
-    def _do_call(self, method, retry=True):
-        base_query = { 'username' : self.username, 'sig' : self.sig, 'format' : 'json' }
+    def _do_call(self, method, retry):
+        base_query = { 'username' : self.username, 'sig' : self._auth(), 'format' : 'json' }
         base_query.update(method)
         request = self.base_url + urllib.urlencode(base_query, doseq=True)
         # For debugging if needed
@@ -57,7 +48,9 @@ class ApiConnection:
         response = urllib2.urlopen(request)
         data = json.load(response)
         time.sleep(3)
-        if data['stat'] == 'fail' and retry != False:
+        # Retry once by default unless specified. Some methods
+        # that return larger amounts of data have high rate limits.
+        if data is not None and data['stat'] == 'fail' and retry is True:
             return self._refresh(method)
         else:
             return data
