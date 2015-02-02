@@ -202,6 +202,16 @@ class ApiClient:
     # Service Status
 
     # Service Settings
+    # get the monitoring endpoint
+    def get_monitoring_url(self, service_id):
+        """Retrieve the monitoring url of a specified service.
+        
+        Arguments:
+            service_id -- The id of the service being queried.
+            
+        """
+        query = { 'method' : 'maintenance.getMonitoringUrl', 'serviceid' : service_id }
+        return self.api_connection.get(query)
 
     # Alert Contact Settings
     # add diagnostic contacts
@@ -259,7 +269,7 @@ class ApiClient:
         """Remove an escalation level contact from a service.
         
         Arguments:
-        service_id -- The if of the service for which contacts are being
+        service_id -- The id of the service for which contacts are being
                       removed.
         level -- The service level for removing the specified contact.
         contacts -- A single contact email to be removed.
@@ -286,3 +296,20 @@ class ApiClient:
     # SLA Settings
 
     # Maintenance Windows
+    
+    # Processed Data
+    def processeddata_getdata(self, service_id, s_day, s_month, s_year, e_day, e_month, e_year):
+        """Gather summarized data for a service.
+        
+        Arguments:
+        service_id -- The service id of for the service for which data is to be retrieved.
+        s_day -- Start date: day of month (must be 1-31)
+        s_month -- Start date: month of year (must be 1-12)
+        s_year -- Start date: year (must be 4 digits)
+        e_day -- End date: day of the month (must be 1-31)
+        e_month -- End date: month of the year (must be 1-12)
+        e_year -- End date: year (must be 4 digits)
+        
+        """
+        query = { 'method' : 'processeddata.getdata', 'serviceid' : service_id, 'sday' : s_day, 'smonth' : s_month, 'syear' : s_year, 'eday' : e_day, 'emonth' : e_month, 'eyear' : e_year }
+        return self.api_connection.get(query)
