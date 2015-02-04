@@ -60,7 +60,7 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service you want to get the 
-                      type of.
+                           type of.
                      
         """
         query = { 'method' : 'maintenance.getServiceType', 'serviceid' : service_id }
@@ -74,20 +74,20 @@ class ApiClient:
         
         Arguments:
         service_name -- The name to give the new service. Service
-                        names can include alphanumeric, hyphen and
-                        underscore characters.
+                                names can include alphanumeric, hyphen and
+                                underscore characters.
         service_type -- The type of service. You can use the following:
-                        APPLICATION
-                        DNS
-                        FTP
-                        PING
-                        POP
-                        PORT
-                        SMTP
-                        STREAM
-                        WEBSERVICE
-                        WEBSITE
-                        WSTRANS		
+                              APPLICATION
+                              DNS
+                              FTP
+                              PING
+                              POP
+                              PORT
+                              SMTP
+                              STREAM
+                              WEBSERVICE
+                              WEBSITE
+                              WSTRANS		
 
         """
         query = { 'method' : 'maintenance.addNewService', 'servicename' : service_name, 'servicetype' : service_type.lower() }
@@ -110,10 +110,10 @@ class ApiClient:
         
         Arguments:
         new_name -- The new service name. This must contain only alpha-
-                    numeric characters, underscores and dashes. The new
-                    service name must be different from the current and
-                    cannot be a duplicate of another existing service
-                    and/or longer than 50 chars.
+                            numeric characters, underscores and dashes. The new
+                            service name must be different from the current and
+                            cannot be a duplicate of another existing service
+                            and/or longer than 50 chars.
         service_id -- The id of the service to be renamed.
         
         """
@@ -141,9 +141,9 @@ class ApiClient:
         
         Keyword Arguments:
         keep_scripts -- Boolean. Monitoring scripts and URL(s) will not be
-                        deleted.
+                              deleted.
         keep_description -- Boolean. The service description will not be
-                            deleted.
+                                    deleted.
         keep_logs -- Boolean. The log data will not be deleted.
         
         """
@@ -165,7 +165,7 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service for which you wish to return
-                      a list of agents.
+                          a list of agents.
                       
         """
         query = { 'method' : 'maintenance.getAgentList', 'serviceid' : service_id }
@@ -179,13 +179,13 @@ class ApiClient:
         Arguments:
         service_id -- The service for which you wish to set the agents.
         agent -- A list of agents that will be non-baseline for the service.
-                 See 'agents.txt' for all locations.
+                    See 'agents.txt' for all locations.
         
         Keyword Arguments:
         baseline -- A list of baseline agents. If you wish to use baselines,
-                    you must use 3 unless the number of strikes for the
-                    service is set to 4, in which case you must specify 4
-                    baseline agents.
+                        you must use 3 unless the number of strikes for the
+                        service is set to 4, in which case you must specify 4
+                        baseline agents.
                     
         """
         query = { 'method' : 'maintenance.setAgentList', 'serviceid' : service_id }
@@ -220,9 +220,9 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service to which contacts are being
-                      added.
+                          added.
         contacts -- A list of email addresses or groups you want to add to
-                    the diagnostic contacts.
+                        the diagnostic contacts.
         
         """
         if type(contacts) is not list:
@@ -236,9 +236,9 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service for which contacts are being
-                      removed.
+                          removed.
         contact -- A single contact to be removed. Lists are not accepted 
-                   with this method.
+                      with this method.
         
         """
         query = { 'method' : 'maintenance.removeDiagnosticContact', 'serviceid' : service_id, 'contact' : contact }
@@ -251,11 +251,11 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service to which contacts are being
-                      added.
+                          added.
         level -- The escalation level you wish to add contacts to. Valid
-                 escalation levels are 1-3.
+                  escalation levels are 1-3.
         contacts -- A list of email addresses, groups or SMS/voice contacts
-                    you wish to add.
+                        you wish to add.
                     
         """
         if type(contacts) is not list:
@@ -269,7 +269,7 @@ class ApiClient:
         
         Arguments:
         service_id -- The id of the service for which contacts are being
-                      removed.
+                          removed.
         level -- The service level for removing the specified contact.
         contacts -- A single contact email to be removed.
         
@@ -319,7 +319,8 @@ class ApiClient:
     # Processed Data
     # gather data for a service which has already been summarized
     def processeddata_getdata(self, service_id, s_day, s_month, s_year, e_day, e_month, e_year):
-        """The processed data API allows customers to download globalwatch monitoring data in a concise summary format.
+        """The processed data API allows customers to download globalwatch 
+        monitoring data in a concise summary format.
         
         Arguments:
         service_id -- The service id of for the service for which data is to be retrieved.
@@ -336,6 +337,60 @@ class ApiClient:
         
     # Realtime
     # returns real time data for a service
+    def realtime_getdata(self, service_id=None, **kwargs):
+        """Return the last sample that was taken for either a given service, a number 
+        of services, or all services under an account. You can specify an optional 
+        parameter to return up to the last 20 samples for each service
+        
+        Arguments:
+        service_id -- A single service id or list of service ids to query. If no service id
+                          is supplied, data for all services will be returned.
+        
+        Keyword Arguments:
+        last_sample_time -- You may specify an epoch time which will be used to get
+                                  only sample data from that time to present. 
+        sample_num -- The number of samples to return per service. Default is 1 and
+                               the maximum is 20.
+        use_baselines -- Can be either 1 or 0. If use_baselines is 1, and the service
+                                 has baseline agents configured, only samples from baseline
+                                 agents will be returned.
+        items -- Can be either 1 or 0. Default is 0. If items is 1, and the service is a
+                    fullpage service, then information regarding the items of the service
+                    are also returned.
+        service_state -- Can be either 'ALL', 'ON' or 'OFF':
+                               ALL -- Return data for services that are either on or off.
+                               ON -- Return data for services that are on.
+                               OFF -- Return data for services that are off.
+                               * The default is 'ALL'.
+        status -- Can be either 'ALL', 'NOK' or 'ERROR':
+                     ALL -- Do not check the status of last sample, all are returned.
+                     NOK -- Return data for services whose last sample status is either
+                                strike or error.
+                     ERROR -- Return data for services whose last sample status is
+                                     ERROR.
+                     * The default is 'ALL'.
+        shared -- Can be either 1 or 0. Default is 1. If the value is 0, and the service
+                      is shared by another user, that service won't be returned.
+        
+        """
+        query = {}
+        if service_id is not None:
+            if type(service_id) is not list:
+                service_id = [service_id]
+            query.update({ 'serviceid' : service_id })
+        if 'last_sample_time' in kwargs:
+            query.update({ 'lastsampletime' : kwargs['last_sample_time'] })
+        if 'sample_num' in kwargs:
+            query.update({ 'samplenum' : kwargs['sample_num'] })
+        if 'use_baselines' in kwargs:
+            query.update({ 'usebaselines' : kwargs['use_baselines'] })
+        if 'items' in kwargs:
+            query.update({ 'items' : kwargs['items'] })
+        if 'service_state' in kwargs:
+            query.update({ 'servicestate' : kwargs['service_state'].lower() })
+        if 'status' is kwargs:
+            query.update({ 'status' : kwargs['status'].lower() })
+        return self.api_connection.get(query, False)
     
     # Account Snapshot
     # returns core statistics for all services within an account

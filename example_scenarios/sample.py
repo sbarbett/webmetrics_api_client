@@ -16,8 +16,7 @@
 __author__ = 'Shane Barbetta'
 
 import sys
-sys.path.insert(0, '../')
-import wm_api_client
+import webmetrics_api_client
 
 if len(sys.argv) != 3:
 	raise Exception('Expected use: python sample.py username api_key')
@@ -25,7 +24,7 @@ if len(sys.argv) != 3:
 username = sys.argv[1]
 api_key = sys.argv[2]
 
-c = wm_api_client.ApiClient(username, api_key)
+c = webmetrics_api_client.ApiClient(username, api_key)
 
 print 'get services %s ' % c.get_services()
 print 'set notepad %s' % c.set_notepad('A string of text to test the notepad')

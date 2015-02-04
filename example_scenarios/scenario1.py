@@ -16,8 +16,7 @@
 __author__ = 'Shane Barbetta'
 
 import sys, json, csv
-sys.path.insert(0, '../')
-import wm_api_client
+import webmetrics_api_client
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
     raise Exception('Expected use: python scenario1.py username api_key [filename.csv]')
@@ -46,7 +45,7 @@ if len(sys.argv) == 4:
     else:
         raise Exception('File name must end in .csv')
 
-c = wm_api_client.ApiClient(username, api_key)
+c = webmetrics_api_client.ApiClient(username, api_key)
 
 account_data = c.get_services()
 
