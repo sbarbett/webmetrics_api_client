@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='webmetrics_api_client',
-    version='0.1',
+    version='0.1.3',
     description='A simple client for interfacing with the Webmetrics API',
     url='https://github.com/sbarbett/webmetrics_api_client',
     author='Shane Barbetta',

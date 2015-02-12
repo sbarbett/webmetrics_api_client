@@ -206,10 +206,28 @@ class ApiClient:
         """Retrieve the monitoring url of a specified service.
         
         Arguments:
-            service_id -- The id of the service being queried.
+        service_id -- The id of the service being queried.
             
         """
         query = { 'method' : 'maintenance.getMonitoringUrl', 'serviceid' : service_id }
+        return self.api_connection.get(query)
+        
+    # set the monitoring endpoint
+    def set_monitoring_url(self, service_id, url, errorstring, searchstring=None):
+        """Set the monitoring url of a specified service.
+        
+        Arguments:
+        service_id -- The id of the service being set.
+        url -- The url to be monitored.
+        errorstring -- The errorstring used to validate this url, will alert if it's found.
+        
+        Keyword Arguments:
+        searchstring -- The searchstring used to validate this url, will alert if it's not found.
+        
+        """
+        query = { 'method' : 'maintenance.setMonitoringUrl', 'serviceid' : service_id, 'url' : url, 'errorstring' : errorstring }
+        if searchstring is not None:
+            query.update({ 'searchstring' : searchstring })
         return self.api_connection.get(query)
 
     # Alert Contact Settings
